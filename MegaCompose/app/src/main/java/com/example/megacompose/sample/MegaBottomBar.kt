@@ -19,7 +19,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.megacompose.ui.theme.MegaComposeTheme
 
-
 @Composable
 fun MegaBottomBar(selected: Int, onSelectedChange: (Int) -> Unit) {
     Row(

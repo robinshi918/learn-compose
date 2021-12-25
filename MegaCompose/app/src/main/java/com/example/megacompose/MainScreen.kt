@@ -1,9 +1,13 @@
 package com.example.megacompose
 
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -58,11 +62,14 @@ fun RowScope.AddItem(
     navController: NavHostController
 ) {
     BottomNavigationItem(
-        label = {
+        /*label = {
             Text(text = screen.title)
-        },
+        },*/
         icon = {
-            Icon(imageVector = screen.icon, contentDescription = screen.title)
+            Icon(
+                imageVector = screen.icon,
+                contentDescription = screen.title
+            )
         },
         selected = currentDestination?.hierarchy?.any {
             it.route == screen.route
@@ -73,7 +80,10 @@ fun RowScope.AddItem(
                 launchSingleTop = true
             }
         },
-        unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled)
+        unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
+        modifier = Modifier
+            .height(30.dp)
+            .align(Alignment.CenterVertically)
 
     )
 }
