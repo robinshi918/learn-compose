@@ -18,6 +18,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.megacompose.ui.BottomBarItem
+import com.example.megacompose.ui.screen.SettingMenu
 
 @Composable
 fun MainScreen() {
@@ -25,6 +26,8 @@ fun MainScreen() {
 
     Scaffold(
         bottomBar = { BottomBar(navController = navController) },
+        drawerContent = { SettingMenu() },
+        drawerGesturesEnabled = true,
     ) {
         BottomNavGraph(navController = navController)
     }

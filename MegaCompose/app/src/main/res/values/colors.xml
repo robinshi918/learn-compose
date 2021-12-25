@@ -18,4 +18,8 @@
     <color name="grey_020_dark_grey">@color/grey_020</color>
     <color name="grey_020">#F5F5F5</color>
 
+    <color name="grey_012_white_012">@color/grey_alpha_012</color>
+    <color name="grey_alpha_012">#1F000000</color>
+
+
 </resources>
