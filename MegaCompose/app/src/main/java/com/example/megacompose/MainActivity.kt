@@ -27,12 +27,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MegaComposeTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.secondary) {
-                    MegaBottomBar(selected = 0) {
-
-                    }
-                }
+                MainScreen()
             }
         }
     }
