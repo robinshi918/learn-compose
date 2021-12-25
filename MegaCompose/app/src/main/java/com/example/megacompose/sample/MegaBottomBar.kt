@@ -1,21 +1,20 @@
 package com.example.megacompose
 
-import android.speech.tts.TextToSpeech
-import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.Icon
+import androidx.compose.material.LocalContentAlpha
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.megacompose.ui.theme.MegaComposeTheme
@@ -86,7 +85,7 @@ fun TabItem(@DrawableRes iconId: Int, modifier: Modifier = Modifier) {
 @Composable
 fun previewTabRow() {
     MegaComposeTheme {
-        var selectedTab: Int by remember { mutableStateOf(0)}
+        var selectedTab: Int by remember { mutableStateOf(0) }
         MegaBottomBar(selectedTab) { index ->
             println("$index selected")
             selectedTab = index
