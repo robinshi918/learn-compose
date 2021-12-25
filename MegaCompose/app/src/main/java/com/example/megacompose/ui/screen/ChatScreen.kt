@@ -16,7 +16,7 @@ import com.example.megacompose.ui.theme.MegaComposeTheme
 fun ChatScreen() {
     Box(
         modifier = Modifier
-            .background(Color.Cyan)
+            .background(Color.White)
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {

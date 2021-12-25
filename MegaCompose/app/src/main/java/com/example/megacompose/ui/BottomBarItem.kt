@@ -5,51 +5,39 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.megacompose.R
 
-sealed class BottomBarScreen(
+sealed class BottomBarItem(
     val route: String,
     val title: String,
-    val icon: ImageVector,
     val selectedIconRes: Int,
-    val unselectedIcon: ImageVector
 ) {
-    object Home : BottomBarScreen(
+    object Home : BottomBarItem(
         route = "home",
         title = "Home",
-        icon = Icons.Default.Home,
         selectedIconRes = R.drawable.ic_homepage,
-        unselectedIcon = Icons.Default.NoAccounts
     )
 
-    object CloudDrive : BottomBarScreen(
+    object CloudDrive : BottomBarItem(
         route = "clouddrive",
         title = "Cloud Drive",
-        icon = Icons.Default.FilePresent,
         selectedIconRes = R.drawable.ic_files_home,
-        unselectedIcon = Icons.Default.NoAccounts
     )
 
-    object Photo : BottomBarScreen(
+    object Photo : BottomBarItem(
         route = "photo",
         title = "Photo",
-        icon = Icons.Default.Image,
         selectedIconRes = R.drawable.ic_camera_uploads,
-        unselectedIcon = Icons.Default.NoAccounts
     )
 
-    object Chat : BottomBarScreen(
+    object Chat : BottomBarItem(
         route = "chat",
         title = "Chat",
-        icon = Icons.Default.Chat,
         selectedIconRes = R.drawable.ic_chat,
-        unselectedIcon = Icons.Default.NoAccounts
     )
 
-    object Transfer : BottomBarScreen(
+    object Transfer : BottomBarItem(
         route = "transfer",
         title = "Transfer",
-        icon = Icons.Default.Transform,
         selectedIconRes = R.drawable.ic_shared,
-        unselectedIcon = Icons.Default.NoAccounts
     )
 
 }

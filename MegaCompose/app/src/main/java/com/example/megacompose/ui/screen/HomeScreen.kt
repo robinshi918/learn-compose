@@ -16,7 +16,7 @@ import com.example.megacompose.ui.theme.MegaComposeTheme
 fun HomeScreen() {
     Box(
         modifier = Modifier
-            .background(Color.Gray)
+            .background(Color.White)
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {

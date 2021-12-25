@@ -17,7 +17,7 @@ import com.example.megacompose.ui.theme.MegaComposeTheme
 fun PhotoScreen() {
     Box(
         modifier = Modifier
-            .background(Color.Gray)
+            .background(Color.White)
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {

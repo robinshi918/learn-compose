@@ -7,4 +7,15 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="red_600">#F30C14</color>
+    <color name="red_600_red_300">@color/red_600</color>
+
+    <color name="grey_alpha_016">#29000000</color>
+    <color name="grey_016_white_016">@color/grey_alpha_016</color>
+
+    <!-- Background color of Achievements screen and bottom navigation bar -->
+    <color name="grey_020_dark_grey">@color/grey_020</color>
+    <color name="grey_020">#F5F5F5</color>
+
 </resources>

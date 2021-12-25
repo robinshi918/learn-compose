@@ -1,6 +1,5 @@
 package com.example.megacompose
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.*
@@ -9,6 +8,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -16,36 +17,33 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.megacompose.ui.BottomBarScreen
+import com.example.megacompose.ui.BottomBarItem
 
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
 
     Scaffold(
-        bottomBar = { BottomBar(navController = navController) }
+        bottomBar = { BottomBar(navController = navController) },
     ) {
         BottomNavGraph(navController = navController)
-
-
     }
 }
-
 
 @Composable
 fun BottomBar(navController: NavHostController) {
     val screens = listOf(
-        BottomBarScreen.CloudDrive,
-        BottomBarScreen.Photo,
-        BottomBarScreen.Home,
-        BottomBarScreen.Chat,
-        BottomBarScreen.Transfer,
+        BottomBarItem.CloudDrive,
+        BottomBarItem.Photo,
+        BottomBarItem.Home,
+        BottomBarItem.Chat,
+        BottomBarItem.Transfer,
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    BottomNavigation(backgroundColor = Color.LightGray) {
+    BottomNavigation(backgroundColor = colorResource(id = R.color.grey_020)) {
         screens.forEach { screen ->
             AddItem(
                 screen = screen,
@@ -59,20 +57,22 @@ fun BottomBar(navController: NavHostController) {
 
 @Composable
 fun RowScope.AddItem(
-    screen: BottomBarScreen,
+    screen: BottomBarItem,
     currentDestination: NavDestination?,
     navController: NavHostController
 ) {
-    val icon = when (currentDestination?.route) {
-        null -> screen.unselectedIcon
-        screen.route -> screen.icon
-        else -> screen.unselectedIcon
+    val tintColor = when (currentDestination?.route) {
+        null -> colorResource(id = R.color.grey_016_white_016)
+        screen.route -> colorResource(id = R.color.red_600_red_300)
+        else -> colorResource(id = R.color.grey_016_white_016)
     }
+
     BottomNavigationItem(
         icon = {
             Icon(
-                imageVector = icon,
+                painterResource(id = screen.selectedIconRes),
                 contentDescription = screen.title,
+                tint = tintColor
             )
         },
         selected = currentDestination?.hierarchy?.any {

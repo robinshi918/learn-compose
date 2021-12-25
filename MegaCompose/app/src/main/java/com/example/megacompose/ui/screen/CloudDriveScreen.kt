@@ -17,7 +17,7 @@ import com.example.megacompose.ui.theme.MegaComposeTheme
 fun CloudDriveScreen() {
     Box(
         modifier = Modifier
-            .background(Color.Black)
+            .background(Color.White)
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
