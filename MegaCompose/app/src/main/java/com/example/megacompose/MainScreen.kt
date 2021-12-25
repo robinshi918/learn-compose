@@ -1,5 +1,6 @@
 package com.example.megacompose
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.*
@@ -7,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -43,7 +45,7 @@ fun BottomBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    BottomNavigation {
+    BottomNavigation(backgroundColor = Color.LightGray) {
         screens.forEach { screen ->
             AddItem(
                 screen = screen,
@@ -61,14 +63,16 @@ fun RowScope.AddItem(
     currentDestination: NavDestination?,
     navController: NavHostController
 ) {
+    val icon = when (currentDestination?.route) {
+        null -> screen.unselectedIcon
+        screen.route -> screen.icon
+        else -> screen.unselectedIcon
+    }
     BottomNavigationItem(
-        /*label = {
-            Text(text = screen.title)
-        },*/
         icon = {
             Icon(
-                imageVector = screen.icon,
-                contentDescription = screen.title
+                imageVector = icon,
+                contentDescription = screen.title,
             )
         },
         selected = currentDestination?.hierarchy?.any {
@@ -79,11 +83,13 @@ fun RowScope.AddItem(
                 popUpTo(navController.graph.findStartDestination().id)
                 launchSingleTop = true
             }
+
         },
         unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
         modifier = Modifier
             .height(30.dp)
-            .align(Alignment.CenterVertically)
+            .align(Alignment.CenterVertically),
+        alwaysShowLabel = false
 
     )
 }
