@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.megacompose.R
 import com.example.megacompose.ui.theme.MegaComposeTheme
+import com.example.megacompose.ui.theme.Typography
 
 @Composable
 fun NavigationView() {
@@ -25,27 +26,50 @@ fun NavigationView() {
             .fillMaxHeight()
             .padding(start = 16.dp, end = 16.dp)
     ) {
-        Text(text = "My Account")
-        Separator()
-        Text(text = "Contacts")
-        Separator()
-        Text(text = "Notification")
-        Separator()
-        Text(text = "Transfers")
-        Separator()
-        Text(text = "Offline")
-        Separator()
-        Text(text = "Rubbish Bin")
-        Separator()
-        Text(text = "Settings")
-        Separator()
-        Text(text = "UPGRADE", modifier = Modifier.clickable { })
-        Separator()
+        NavigationItem(text = "My Account") {}
 
+        NavigationItem(text = "Contacts") {}
+
+        NavigationItem(text = "Notification") {}
+
+        NavigationItem(text = "Transfers") {}
+
+        NavigationItem(text = "Offline") {}
+
+        NavigationItem(text = "Rubbish Bin") {}
+
+        NavigationItem(text = "Settings") {}
+
+        NavigationItem(text = "UPGRADE") {}
     }
 
 }
 
+@Composable
+fun NavigationItem(text: String, onClick: () -> Unit) {
+    Column(
+
+    ) {
+        Box(
+            modifier = Modifier
+                .clickable { onClick }
+                .height(56.dp)
+                .fillMaxWidth(),
+            contentAlignment = Alignment.CenterStart
+        ) {
+            Text(
+                text = text,
+                style = Typography.h6,
+            )
+        }
+        Divider(
+            modifier = Modifier
+                .height(1.dp)
+                .fillMaxWidth(),
+            color = colorResource(id = R.color.grey_alpha_012)
+        )
+    }
+}
 
 @Composable
 fun AccountInfoSection(avatarResId: Int, email: String) {
@@ -55,7 +79,7 @@ fun AccountInfoSection(avatarResId: Int, email: String) {
             shape = CircleShape,
             color = MaterialTheme.colors.onSurface.copy(alpha = 1.0f)
         ) {
-            Box(modifier = Modifier) {
+            Box {
                 Image(
                     painter = painterResource(id = avatarResId),
                     contentDescription = "avatar"
@@ -79,12 +103,12 @@ fun previewAccountInfoSection() {
     }
 }
 
+@Preview
 @Composable
-fun Separator(modifier: Modifier = Modifier) {
-    Divider(
-        modifier = modifier
-            .height(1.dp)
-            .fillMaxWidth(),
-        color = colorResource(id = R.color.grey_alpha_012)
-    )
+fun previewNavigationItem() {
+    MegaComposeTheme {
+        NavigationItem(text = "Hello") {
+
+        }
+    }
 }
