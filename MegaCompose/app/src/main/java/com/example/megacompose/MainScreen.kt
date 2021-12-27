@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -18,7 +17,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.megacompose.ui.BottomBarItem
-import com.example.megacompose.ui.screen.SettingMenu
+import com.example.megacompose.ui.screen.NavigationView
 
 @Composable
 fun MainScreen() {
@@ -26,7 +25,7 @@ fun MainScreen() {
 
     Scaffold(
         bottomBar = { BottomBar(navController = navController) },
-        drawerContent = { SettingMenu() },
+        drawerContent = { NavigationView() },
         drawerGesturesEnabled = true,
     ) {
         BottomNavGraph(navController = navController)
