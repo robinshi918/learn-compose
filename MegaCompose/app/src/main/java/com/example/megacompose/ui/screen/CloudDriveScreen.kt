@@ -24,7 +24,7 @@ fun CloudDriveScreen() {
         Text(
             text = "Cloud Drive",
             fontSize = 40.sp,
-            color = Color.White
+            color = Color.Black
         )
     }
 }
