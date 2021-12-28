@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,7 +37,7 @@ fun MainScreen() {
         bottomBar = { BottomBar(navController = navController) },
         drawerContent = { NavigationView() },
         drawerGesturesEnabled = true,
-        topBar = { TitleBar() }
+//        topBar = { TitleBar() }
 
     ) {
         BottomNavGraph(navController = navController)
@@ -43,7 +45,7 @@ fun MainScreen() {
 }
 
 @Composable
-fun TitleBar() {
+fun HomeTitleBar() {
     Surface(
         elevation = 4.dp,
         modifier = Modifier
@@ -71,7 +73,7 @@ fun TitleBar() {
                 },
                 leadingIcon = {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_homepage),
+                        imageVector = Icons.Default.Menu,
                         contentDescription = "settings button",
                         modifier = Modifier.clickable {
                             println("setting icon clicked")

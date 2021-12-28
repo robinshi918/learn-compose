@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.megacompose.HomeTitleBar
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -16,16 +17,20 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen() {
+    Column(modifier = Modifier.fillMaxSize()) {
+        HomeTitleBar()
+        HomeContent()
+    }
+}
+
+@Composable
+private fun HomeContent() {
     Box(
         modifier = Modifier
             .background(Color.White)
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-//        Text(
-//            text = "HOME",
-//            fontSize = 40.sp
-//        )
         HomeTabs()
     }
 }
@@ -47,16 +52,11 @@ fun HomeTabs() {
     val coroutineScope = rememberCoroutineScope()
 
     Column {
-        val indicator = @Composable { _: List<TabPosition> ->
-            Surface(modifier = Modifier
-                .height(2.dp)
-                .background(color = Color.Black)) {}
-        }
-
         TabRow(
             selectedTabIndex = tabIndex,
             backgroundColor = Color.Transparent,
-            contentColor = Color.Red
+            contentColor = Color.Red,
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp)
         ) {
             tabData.forEachIndexed { index, label ->
                 Tab(selected = index == tabIndex,
@@ -83,7 +83,10 @@ fun HomeTabs() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = tabData[index])
+                when (index) {
+                    0 -> RecentScreen()
+                    1 -> OfflineScreen()
+                }
             }
         }
     }
