@@ -88,15 +88,6 @@ fun FilesTitleBar() {
         }
 
     )
-
-    /*Row {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_homepage),
-            contentDescription = "Settings button",
-            modifier = Modifier.clickable { })
-        Text(text = "CLOUD DRIVE", style = Typography.h6)
-        Icon(painter = painterResource(id = R.drawable.ic_chat), contentDescription = "search button")
-    }*/
 }
 
 @Preview
