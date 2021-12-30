@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.megacompose.R
+import com.example.megacompose.common.MegaButton
 import com.example.megacompose.ui.theme.MegaComposeTheme
 import com.example.megacompose.ui.theme.Typography
 
@@ -46,11 +47,13 @@ fun NavigationView() {
 
         NavigationItem(text = "Settings") {}
 
-        UpgradeButton() {}
+        MegaButton(text = "UPGRADE") {
+
+        }
     }
 }
 
-@Composable
+/*@Composable
 private fun UpgradeButton(onClick: () -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -58,6 +61,7 @@ private fun UpgradeButton(onClick: () -> Unit) {
         if (isPressed) colorResource(id = R.color.teal_300).copy(alpha = 0.12f) else colorResource(
             id = R.color.teal_300
         )
+
 
     Button(
         onClick = onClick,
@@ -70,7 +74,7 @@ private fun UpgradeButton(onClick: () -> Unit) {
             color = colorResource(id = R.color.white_dark_grey)
         )
     }
-}
+}*/
 
 @Composable
 fun NavigationItem(text: String, onClick: () -> Unit) {

@@ -51,7 +51,11 @@ private fun FilesContent() {
                 items = files,
                 itemContent = {
 
-                    Row(modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                    ) {
                         Icon(
                             modifier = Modifier.size(40.dp),
                             imageVector = Icons.Default.Mail,
@@ -62,8 +66,6 @@ private fun FilesContent() {
                             Text(text = it.fileSize)
                         }
                     }
-
-
                 }
             )
         }
