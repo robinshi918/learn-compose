@@ -25,9 +25,11 @@ class MainActivity : ComponentActivity() {
         super.onResume()
         Handler().postDelayed(
             {
+                Log.d("Robin", "before calling getMetaApi()")
                 val megaApi = MegaComposeApplication.getMegaApi()
-                megaApi.login("rsh+5@mega.co.nz", "hello123123@", object :
-                    MegaRequestListenerInterface {
+                Log.d("Robin", "before calling MegaAPI.login()")
+                megaApi.login("rsh+7@mega.co.nz", "hellohello123@",
+                    object : MegaRequestListenerInterface {
                     override fun onRequestStart(api: MegaApiJava?, request: MegaRequest?) {
                         Log.d("Robin", "Login onRequestStart()")
                     }
