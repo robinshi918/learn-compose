@@ -1,23 +1,15 @@
 package com.example.megacompose
 
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
 import com.example.megacompose.ui.theme.MegaComposeTheme
+import nz.mega.sdk.MegaApiJava
+import nz.mega.sdk.MegaError
+import nz.mega.sdk.MegaRequest
+import nz.mega.sdk.MegaRequestListenerInterface
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,75 +20,50 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MegaComposeTheme {
-        Greeting("Android")
-    }
-}
-
-@Preview
-@Composable
-fun LayoutScaffold() {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = "Hello Title")
-                },
-                actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(imageVector = Icons.Filled.Face, contentDescription = "")
+    override fun onResume() {
+        super.onResume()
+        Handler().postDelayed(
+            {
+                val megaApi = MegaComposeApplication.getMegaApi()
+                megaApi.login("rsh+5@mega.co.nz", "hello123123@", object :
+                    MegaRequestListenerInterface {
+                    override fun onRequestStart(api: MegaApiJava?, request: MegaRequest?) {
+                        Log.d("Robin", "Login onRequestStart()")
                     }
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(imageVector = Icons.Filled.Delete, contentDescription = "")
+
+                    override fun onRequestUpdate(api: MegaApiJava?, request: MegaRequest?) {
+                        Log.d("Robin", "Login onRequestUpdate()")
                     }
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(imageVector = Icons.Filled.Face, contentDescription = "")
+
+                    override fun onRequestFinish(
+                        api: MegaApiJava?,
+                        request: MegaRequest?,
+                        e: MegaError?
+                    ) {
+                        Log.d("Robin", "Login onRequestFinish()")
+                        e?.let {
+                            Log.d("Robin", "${e.errorCode}(${e.errorString})")
+                        }
                     }
-                }
-            )
-        }
-    ) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding)) {
-            Text(text = "Hi There!")
-            Text(text = "Thanks for going through the Layouts lesson")
-        }
 
-    }
-}
+                    override fun onRequestTemporaryError(
+                        api: MegaApiJava?,
+                        request: MegaRequest?,
+                        e: MegaError?
+                    ) {
+                        Log.d("Robin", "Login onRequestTemporaryError()")
+                        e?.let {
+                            Log.d("Robin","${e.errorCode}(${e.errorString})")
+                        }
+                    }
+                })
 
-@Preview
-@Composable
-fun SimpleList(modifier: Modifier = Modifier) {
-    val scrollState = rememberLazyListState()
-    LazyColumn(state = scrollState) {
-        items(100) {
-            ImageListItem(index = it)
-        }
-    }
-}
 
-@Composable
-fun ImageListItem(index: Int) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Image(
-            painter = rememberImagePainter(
-                data = "https://developer.android.com/images/brand/Android_Robot.png"
-            ),
-            contentDescription = "Android Logo",
-            modifier = Modifier.size(50.dp)
+            }, 1000
         )
-        Spacer(modifier = Modifier.width(10.dp))
-        Text("Item #$index", style = MaterialTheme.typography.subtitle1)
     }
 }
+
+
 
