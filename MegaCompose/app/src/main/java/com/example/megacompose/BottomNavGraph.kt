@@ -4,7 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.megacompose.login.LoginScreen
 import com.example.megacompose.ui.BottomBarItem
+import com.example.megacompose.ui.MegaScreen
 import com.example.megacompose.ui.screen.*
 
 
@@ -12,27 +14,34 @@ import com.example.megacompose.ui.screen.*
 fun BottomNavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = BottomBarItem.Home.route
+        startDestination = MegaScreen.Login.route
     ) {
-        composable(route = BottomBarItem.Home.route) {
+        composable(route = MegaScreen.Home.route) {
             HomeScreen()
         }
 
-        composable(route = BottomBarItem.CloudDrive.route) {
+        composable(route = MegaScreen.CloudDrive.route) {
             CloudDriveScreen()
         }
 
-        composable(route = BottomBarItem.Photo.route) {
+        composable(route = MegaScreen.Photos.route) {
             PhotoScreen()
         }
 
-        composable(route = BottomBarItem.Chat.route) {
+        composable(route = MegaScreen.Chat.route) {
             ChatScreen()
         }
 
-        composable(route = BottomBarItem.Transfer.route) {
+        composable(route = MegaScreen.Transfer.route) {
             TransferScreen()
         }
+
+        composable(route = MegaScreen.Login.route) {
+            LoginScreen(navController)
+        }
+
+
+
     }
 
 }

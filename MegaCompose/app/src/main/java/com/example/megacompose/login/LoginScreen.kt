@@ -21,6 +21,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.megacompose.R
 import com.example.megacompose.common.MegaButton
+import com.example.megacompose.ui.BottomBarItem
 import com.example.megacompose.ui.theme.MegaComposeTheme
 import com.example.megacompose.ui.theme.Typography
 
@@ -81,7 +82,7 @@ fun LoginScreen(navController: NavHostController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         MegaButton("LOGIN") {
-            navController.navigate(Screen.MainScreen.route)
+            navController.navigate(BottomBarItem.Home.route)
         }
         Spacer(modifier = Modifier.height(32.dp))
         Text(

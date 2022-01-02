@@ -1,5 +1,6 @@
 package com.example.megacompose
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -22,23 +23,32 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.megacompose.ui.BottomBarItem
+import com.example.megacompose.ui.MegaScreen
 import com.example.megacompose.ui.screen.NavigationView
 
 @Composable
 fun MainScreen(navController: NavHostController) {
-//    val navController = rememberNavController()
-
     Scaffold(
-        bottomBar = { BottomBar(navController = navController) },
+        bottomBar = {
+            if (shouldShowBottomNavBar(navController = navController)) {
+                BottomBar(navController = navController)
+            }
+        },
         drawerContent = { NavigationView() },
         drawerGesturesEnabled = true,
     ) {
         BottomNavGraph(navController = navController)
     }
+}
+
+@Composable
+fun shouldShowBottomNavBar(navController: NavHostController): Boolean {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val route = navBackStackEntry?.destination?.route
+    return !(route != null && route == MegaScreen.Login.route)
 }
 
 @Composable
@@ -119,7 +129,6 @@ fun BottomBar(navController: NavHostController) {
     }
 }
 
-
 @Composable
 fun RowScope.AddItem(
     item: BottomBarItem,
@@ -145,7 +154,7 @@ fun RowScope.AddItem(
         } == true,
         onClick = {
             navController.navigate(item.route) {
-                popUpTo(navController.graph.findStartDestination().id)
+                popUpTo(navController.graph.findNode(BottomBarItem.Home.route)!!.id)
                 launchSingleTop = true
             }
 
@@ -155,6 +164,5 @@ fun RowScope.AddItem(
             .height(30.dp)
             .align(Alignment.CenterVertically),
         alwaysShowLabel = false
-
     )
 }

@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
-import com.example.megacompose.login.LoginNavGraph
 import com.example.megacompose.ui.theme.MegaComposeTheme
 import nz.mega.sdk.MegaApiJava
 import nz.mega.sdk.MegaError
@@ -19,7 +18,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             MegaComposeTheme {
-                LoginNavGraph(navController = navController)
+                MainScreen(navController = navController)
             }
         }
     }

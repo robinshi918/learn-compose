@@ -1,8 +1,5 @@
 package com.example.megacompose.ui
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.megacompose.R
 
 sealed class BottomBarItem(
@@ -11,33 +8,32 @@ sealed class BottomBarItem(
     val selectedIconRes: Int,
 ) {
     object Home : BottomBarItem(
-        route = "home",
+        route = MegaScreen.Home.route,
         title = "Home",
         selectedIconRes = R.drawable.ic_homepage,
     )
 
     object CloudDrive : BottomBarItem(
-        route = "clouddrive",
+        route = MegaScreen.CloudDrive.route,
         title = "Cloud Drive",
         selectedIconRes = R.drawable.ic_files_home,
     )
 
     object Photo : BottomBarItem(
-        route = "photo",
+        route = MegaScreen.Photos.route,
         title = "Photo",
         selectedIconRes = R.drawable.ic_camera_uploads,
     )
 
     object Chat : BottomBarItem(
-        route = "chat",
+        route = MegaScreen.Chat.route,
         title = "Chat",
         selectedIconRes = R.drawable.ic_chat,
     )
 
     object Transfer : BottomBarItem(
-        route = "transfer",
+        route = MegaScreen.Transfer.route,
         title = "Transfer",
         selectedIconRes = R.drawable.ic_shared,
     )
-
 }
