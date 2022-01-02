@@ -5,6 +5,8 @@ import android.os.Handler
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.navigation.compose.rememberNavController
+import com.example.megacompose.login.LoginNavGraph
 import com.example.megacompose.ui.theme.MegaComposeTheme
 import nz.mega.sdk.MegaApiJava
 import nz.mega.sdk.MegaError
@@ -15,14 +17,19 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val navController = rememberNavController()
             MegaComposeTheme {
-                MainScreen()
+                LoginNavGraph(navController = navController)
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
+        callMegaApi()
+    }
+
+    private fun callMegaApi() {
         Handler().postDelayed(
             {
                 Log.d("Robin", "before calling getMetaApi()")
@@ -82,7 +89,10 @@ class MainActivity : ComponentActivity() {
 
                                                 val nodeList = megaApi.getChildren(megaApi.rootNode)
                                                 for (node in nodeList) {
-                                                    Log.d("Robin", "Node name = ${node.name}\tNode Type = ${node.type}")
+                                                    Log.d(
+                                                        "Robin",
+                                                        "Node name = ${node.name}\tNode Type = ${node.type}"
+                                                    )
                                                 }
 
                                             }
@@ -95,12 +105,9 @@ class MainActivity : ComponentActivity() {
                                             e: MegaError?
                                         ) {
                                         }
-
                                     })
                                 }
                             }
-
-
                         }
 
                         override fun onRequestTemporaryError(

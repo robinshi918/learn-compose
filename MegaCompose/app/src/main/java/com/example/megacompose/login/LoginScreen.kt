@@ -17,13 +17,15 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.megacompose.R
 import com.example.megacompose.common.MegaButton
 import com.example.megacompose.ui.theme.MegaComposeTheme
 import com.example.megacompose.ui.theme.Typography
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavHostController) {
 
     Column(Modifier.padding(16.dp)) {
 
@@ -79,14 +81,14 @@ fun LoginScreen() {
         Spacer(modifier = Modifier.height(16.dp))
 
         MegaButton("LOGIN") {
-
+            navController.navigate(Screen.MainScreen.route)
         }
         Spacer(modifier = Modifier.height(32.dp))
         Text(
             text = "Forgot your password?",
             style = Typography.h6,
             color = colorResource(id = R.color.teal_300),
-            modifier = Modifier.clickable{}
+            modifier = Modifier.clickable {}
         )
         Spacer(modifier = Modifier.height(32.dp))
         Row {
@@ -95,7 +97,7 @@ fun LoginScreen() {
             Text(
                 text = "Create account", style = Typography.h6,
                 color = colorResource(id = R.color.teal_300),
-                modifier = Modifier.clickable{}
+                modifier = Modifier.clickable {}
 
             )
         }
@@ -107,6 +109,7 @@ fun LoginScreen() {
 @Composable
 fun previewLoginScreen() {
     MegaComposeTheme {
-        LoginScreen()
+        val navController = rememberNavController()
+        LoginScreen(navController)
     }
 }

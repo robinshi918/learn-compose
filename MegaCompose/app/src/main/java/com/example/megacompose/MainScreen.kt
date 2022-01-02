@@ -25,13 +25,12 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.example.megacompose.ui.BottomBarItem
 import com.example.megacompose.ui.screen.NavigationView
 
 @Composable
-fun MainScreen() {
-    val navController = rememberNavController()
+fun MainScreen(navController: NavHostController) {
+//    val navController = rememberNavController()
 
     Scaffold(
         bottomBar = { BottomBar(navController = navController) },
@@ -98,7 +97,7 @@ fun HomeTitleBar() {
 
 @Composable
 fun BottomBar(navController: NavHostController) {
-    val screens = listOf(
+    val items = listOf(
         BottomBarItem.CloudDrive,
         BottomBarItem.Photo,
         BottomBarItem.Home,
@@ -110,9 +109,9 @@ fun BottomBar(navController: NavHostController) {
     val currentDestination = navBackStackEntry?.destination
 
     BottomNavigation(backgroundColor = colorResource(id = R.color.grey_020)) {
-        screens.forEach { screen ->
+        items.forEach { screen ->
             AddItem(
-                screen = screen,
+                item = screen,
                 currentDestination = currentDestination,
                 navController = navController
             )
@@ -123,29 +122,29 @@ fun BottomBar(navController: NavHostController) {
 
 @Composable
 fun RowScope.AddItem(
-    screen: BottomBarItem,
+    item: BottomBarItem,
     currentDestination: NavDestination?,
     navController: NavHostController
 ) {
     val tintColor = when (currentDestination?.route) {
         null -> colorResource(id = R.color.grey_016_white_016)
-        screen.route -> colorResource(id = R.color.red_600_red_300)
+        item.route -> colorResource(id = R.color.red_600_red_300)
         else -> colorResource(id = R.color.grey_016_white_016)
     }
 
     BottomNavigationItem(
         icon = {
             Icon(
-                painterResource(id = screen.selectedIconRes),
-                contentDescription = screen.title,
+                painterResource(id = item.selectedIconRes),
+                contentDescription = item.title,
                 tint = tintColor
             )
         },
         selected = currentDestination?.hierarchy?.any {
-            it.route == screen.route
+            it.route == item.route
         } == true,
         onClick = {
-            navController.navigate(screen.route) {
+            navController.navigate(item.route) {
                 popUpTo(navController.graph.findStartDestination().id)
                 launchSingleTop = true
             }
