@@ -37,8 +37,6 @@ fun MainScreen() {
         bottomBar = { BottomBar(navController = navController) },
         drawerContent = { NavigationView() },
         drawerGesturesEnabled = true,
-//        topBar = { TitleBar() }
-
     ) {
         BottomNavGraph(navController = navController)
     }
