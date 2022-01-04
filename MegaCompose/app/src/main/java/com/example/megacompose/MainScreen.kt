@@ -1,6 +1,5 @@
 package com.example.megacompose
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -25,12 +24,13 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.megacompose.login.LoginViewModel
 import com.example.megacompose.ui.BottomBarItem
 import com.example.megacompose.ui.MegaScreen
 import com.example.megacompose.ui.screen.NavigationView
 
 @Composable
-fun MainScreen(navController: NavHostController) {
+fun MainScreen(navController: NavHostController, loginViewModel: LoginViewModel) {
     Scaffold(
         bottomBar = {
             if (shouldShowBottomNavBar(navController = navController)) {
@@ -40,7 +40,7 @@ fun MainScreen(navController: NavHostController) {
         drawerContent = { NavigationView() },
         drawerGesturesEnabled = true,
     ) {
-        BottomNavGraph(navController = navController)
+        BottomNavGraph(navController = navController, loginViewModel)
     }
 }
 

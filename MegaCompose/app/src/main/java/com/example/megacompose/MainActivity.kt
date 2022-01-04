@@ -5,38 +5,39 @@ import android.os.Handler
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.navigation.compose.rememberNavController
+import com.example.megacompose.login.LoginViewModel
 import com.example.megacompose.ui.theme.MegaComposeTheme
-import nz.mega.sdk.MegaApiJava
-import nz.mega.sdk.MegaError
-import nz.mega.sdk.MegaRequest
-import nz.mega.sdk.MegaRequestListenerInterface
+import dagger.hilt.android.AndroidEntryPoint
+import nz.mega.sdk.*
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val loginViewModel: LoginViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
             MegaComposeTheme {
-                MainScreen(navController = navController)
+                MainScreen(navController = navController, loginViewModel)
             }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        callMegaApi()
-    }
-
     private fun callMegaApi() {
+        val userName = "rsh+7@mega.co.nz"
+        val password = "hellohello123@"
         Handler().postDelayed(
             {
                 Log.d("Robin", "before calling getMetaApi()")
                 val megaApi = MegaComposeApplication.getMegaApi()
                 Log.d("Robin", "before calling MegaAPI.login()")
                 megaApi.login(
-                    "rsh+7@mega.co.nz",
-                    "hellohello123@",
+                    userName,
+                    password,
                     object : MegaRequestListenerInterface {
                         override fun onRequestStart(api: MegaApiJava?, request: MegaRequest?) {
                             Log.d("Robin", "Login onRequestStart()")
@@ -61,16 +62,12 @@ class MainActivity : ComponentActivity() {
                                         override fun onRequestStart(
                                             api: MegaApiJava?,
                                             request: MegaRequest?
-                                        ) {
-
-                                        }
+                                        ) {}
 
                                         override fun onRequestUpdate(
                                             api: MegaApiJava?,
                                             request: MegaRequest?
-                                        ) {
-
-                                        }
+                                        ) {}
 
                                         override fun onRequestFinish(
                                             api: MegaApiJava?,
@@ -90,7 +87,11 @@ class MainActivity : ComponentActivity() {
                                                 for (node in nodeList) {
                                                     Log.d(
                                                         "Robin",
-                                                        "Node name = ${node.name}\tNode Type = ${node.type}"
+                                                        "Node name = ${node.name}\tNode Type = ${
+                                                            nodeTypeString(
+                                                                node.type
+                                                            )
+                                                        }"
                                                     )
                                                 }
 
@@ -124,6 +125,17 @@ class MainActivity : ComponentActivity() {
 
             }, 1000
         )
+    }
+}
+
+fun nodeTypeString(type: Int): String {
+    return when (type) {
+        MegaNode.TYPE_FILE -> "FILE"
+        MegaNode.TYPE_FOLDER -> "FOLDER"
+        MegaNode.TYPE_ROOT -> "ROOT"
+        MegaNode.TYPE_INCOMING -> "INCOMING"
+        MegaNode.TYPE_RUBBISH -> "RUBBISH"
+        else -> "unknown"
     }
 }
 

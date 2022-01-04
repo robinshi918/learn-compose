@@ -3,8 +3,10 @@ package com.example.megacompose
 import android.app.Application
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import dagger.hilt.android.HiltAndroidApp
 import nz.mega.sdk.MegaApiAndroid
 
+@HiltAndroidApp
 class MegaComposeApplication : Application() {
     companion object {
         val APP_KEY = "XqBVhaKb"

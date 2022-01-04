@@ -14,22 +14,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.megacompose.R
 import com.example.megacompose.common.MegaButton
 import com.example.megacompose.ui.BottomBarItem
-import com.example.megacompose.ui.theme.MegaComposeTheme
 import com.example.megacompose.ui.theme.Typography
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel) {
 
     Column(Modifier.padding(16.dp)) {
-
 
         Text(text = "LOG INTO MEGA", style = Typography.h6)
         Spacer(modifier = Modifier.height(16.dp))
@@ -83,6 +82,9 @@ fun LoginScreen(navController: NavHostController) {
 
         MegaButton("LOGIN") {
             navController.navigate(BottomBarItem.Home.route)
+            GlobalScope.launch(Dispatchers.IO) {
+                viewModel.login(emailTextState.value.text, passwordTextState.value.text)
+            }
         }
         Spacer(modifier = Modifier.height(32.dp))
         Text(
@@ -99,18 +101,7 @@ fun LoginScreen(navController: NavHostController) {
                 text = "Create account", style = Typography.h6,
                 color = colorResource(id = R.color.teal_300),
                 modifier = Modifier.clickable {}
-
             )
         }
-    }
-}
-
-
-@Preview
-@Composable
-fun previewLoginScreen() {
-    MegaComposeTheme {
-        val navController = rememberNavController()
-        LoginScreen(navController)
     }
 }

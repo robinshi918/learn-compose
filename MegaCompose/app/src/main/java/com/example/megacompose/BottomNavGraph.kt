@@ -5,13 +5,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.megacompose.login.LoginScreen
-import com.example.megacompose.ui.BottomBarItem
+import com.example.megacompose.login.LoginViewModel
 import com.example.megacompose.ui.MegaScreen
 import com.example.megacompose.ui.screen.*
 
 
 @Composable
-fun BottomNavGraph(navController: NavHostController) {
+fun BottomNavGraph(navController: NavHostController, loginViewModel: LoginViewModel) {
     NavHost(
         navController = navController,
         startDestination = MegaScreen.Login.route
@@ -37,7 +37,7 @@ fun BottomNavGraph(navController: NavHostController) {
         }
 
         composable(route = MegaScreen.Login.route) {
-            LoginScreen(navController)
+            LoginScreen(navController, loginViewModel)
         }
 
 
