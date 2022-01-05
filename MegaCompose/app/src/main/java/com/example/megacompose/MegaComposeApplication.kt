@@ -5,6 +5,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import dagger.hilt.android.HiltAndroidApp
 import nz.mega.sdk.MegaApiAndroid
+import timber.log.Timber
 
 @HiltAndroidApp
 class MegaComposeApplication : Application() {
@@ -34,5 +35,9 @@ class MegaComposeApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         INSTANCE = this
+
+        //TODO use another tree for Release build
+        Timber.plant(Timber.DebugTree())
     }
+
 }

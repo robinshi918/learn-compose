@@ -152,7 +152,6 @@ fun AccountInfoSection(
 
         )
         Text(text = "56.2 GB of 405 GB used", Modifier.padding(top = 12.dp))
-
     }
 }
 

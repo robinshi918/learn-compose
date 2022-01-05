@@ -1,4 +1,4 @@
-package com.example.megacompose
+package com.example.megacompose.samplecode
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.megacompose.ui.theme.MegaComposeTheme
+import com.example.megacompose.R
 
 @Composable
 fun MegaBottomBar(selected: Int, onSelectedChange: (Int) -> Unit) {

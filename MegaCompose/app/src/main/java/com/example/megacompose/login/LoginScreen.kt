@@ -1,5 +1,7 @@
 package com.example.megacompose.login
 
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -13,29 +15,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.megacompose.R
 import com.example.megacompose.common.MegaButton
-import com.example.megacompose.ui.BottomBarItem
+import com.example.megacompose.login.domain.entity.MegaApiResponseStage
+import com.example.megacompose.ui.MegaScreen
 import com.example.megacompose.ui.theme.Typography
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import nz.mega.sdk.MegaError
+import timber.log.Timber
 
 @Composable
 fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel) {
 
-    Column(Modifier.padding(16.dp)) {
 
+    Column(Modifier.padding(16.dp)) {
         Text(text = "LOG INTO MEGA", style = Typography.h6)
         Spacer(modifier = Modifier.height(16.dp))
-        val emailTextState = remember { mutableStateOf(TextFieldValue()) }
+        val email = remember { mutableStateOf(TextFieldValue()) }
         TextField(
-            value = emailTextState.value,
-            onValueChange = { emailTextState.value = it },
+            value = email.value,
+            onValueChange = { email.value = it },
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Transparent,
@@ -54,10 +60,10 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
         Spacer(modifier = Modifier.height(16.dp))
-        val passwordTextState = remember { mutableStateOf(TextFieldValue()) }
+        val password = remember { mutableStateOf(TextFieldValue()) }
         TextField(
-            value = passwordTextState.value,
-            onValueChange = { passwordTextState.value = it },
+            value = password.value,
+            onValueChange = { password.value = it },
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Transparent,
@@ -76,14 +82,29 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel) {
                     color = colorResource(id = R.color.teal_300)
                 )
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            visualTransformation = PasswordVisualTransformation()
         )
         Spacer(modifier = Modifier.height(16.dp))
 
         MegaButton("LOGIN") {
-            navController.navigate(BottomBarItem.Home.route)
-            GlobalScope.launch(Dispatchers.IO) {
-                viewModel.login(emailTextState.value.text, passwordTextState.value.text)
+
+            GlobalScope.launch {
+                viewModel.login(email.value.text, password.value.text).collect { resp ->
+                    Timber.d("receive log responses - ${resp.stage}")
+                    if (resp.stage == MegaApiResponseStage.FINISH) {
+                        if (resp.error!!.errorCode == MegaError.API_OK) {
+                            // TODO: figure out how to run navigation in main thread
+                            Handler(Looper.getMainLooper()).post(){
+                                navController.navigate(MegaScreen.Home.route)
+                            }
+
+                        } else {
+                            // TODO login error or show MFA
+
+                        }
+                    }
+                }
             }
         }
         Spacer(modifier = Modifier.height(32.dp))

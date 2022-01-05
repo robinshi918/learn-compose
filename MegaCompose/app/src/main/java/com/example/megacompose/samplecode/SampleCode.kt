@@ -1,4 +1,4 @@
-package com.example.megacompose
+package com.example.megacompose.samplecode
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.megacompose.ui.theme.MegaComposeTheme
 
-////////////////////////////////////////
 @Composable
 fun PhotographerCard(modifier: Modifier = Modifier) {
 
