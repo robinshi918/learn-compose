@@ -1,20 +1,56 @@
 package com.example.megacompose.login
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.megacompose.login.domain.entity.MegaApiResponse
-import com.example.megacompose.login.domain.entity.MegaApiResponseStage.*
+import androidx.lifecycle.viewModelScope
+import com.example.megacompose.login.domain.entity.MegaApiResponseStage
+import com.example.megacompose.login.domain.usecase.LoginMFAUseCase
+import com.example.megacompose.login.domain.usecase.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import nz.mega.sdk.*
 import timber.log.Timber
 import javax.inject.Inject
 
-@HiltViewModel
-class LoginViewModel @Inject internal constructor(val megaApi: MegaApiAndroid) : ViewModel() {
+const val API_NONE = 1
 
-    fun login(user: String, password: String): Flow<MegaApiResponse> =
+@HiltViewModel
+class LoginViewModel @Inject internal constructor(
+    val megaApi: MegaApiAndroid,
+    val loginUseCase: LoginUseCase,
+    val loginMfaUseCase: LoginMFAUseCase
+) : ViewModel() {
+
+//    var result: Int by mutableStateOf(API_NONE)
+
+    private val _result: MutableLiveData<Int> = MutableLiveData(API_NONE)
+
+    val result: LiveData<Int> = _result
+
+    fun login(userName: String, password: String) {
+        viewModelScope.launch {
+            loginUseCase(userName, password).collect { resp ->
+                Timber.d("receive log responses - ${resp.stage} ${resp.stage}")
+                if (resp.stage == MegaApiResponseStage.FINISH) {
+                    _result.value = if (resp.error!!.errorCode == MegaError.API_OK) {
+                        MegaError.API_OK
+                    } else {
+                        // TODO login error or show MFA
+                        resp.error.errorCode
+                    }
+                }
+            }
+        }
+
+    }
+
+
+    /*fun login(user: String, password: String): Flow<MegaApiResponse> =
         callbackFlow {
             megaApi.login(user, password, object : MegaRequestListenerInterface {
                 override fun onRequestStart(api: MegaApiJava?, request: MegaRequest?) {
@@ -66,7 +102,7 @@ class LoginViewModel @Inject internal constructor(val megaApi: MegaApiAndroid) :
             })
 
             awaitClose()
-        }
+        }*/
 
     fun login(user: String, password: String, authCode: String) {
         megaApi.multiFactorAuthLogin(
@@ -101,4 +137,15 @@ class LoginViewModel @Inject internal constructor(val megaApi: MegaApiAndroid) :
             })
     }
 
+}
+
+fun nodeTypeString(type: Int): String {
+    return when (type) {
+        MegaNode.TYPE_FILE -> "FILE"
+        MegaNode.TYPE_FOLDER -> "FOLDER"
+        MegaNode.TYPE_ROOT -> "ROOT"
+        MegaNode.TYPE_INCOMING -> "INCOMING"
+        MegaNode.TYPE_RUBBISH -> "RUBBISH"
+        else -> "unknown"
+    }
 }

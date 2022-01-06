@@ -39,9 +39,6 @@ fun BottomNavGraph(navController: NavHostController, loginViewModel: LoginViewMo
         composable(route = MegaScreen.Login.route) {
             LoginScreen(navController, loginViewModel)
         }
-
-
-
     }
 
 }
