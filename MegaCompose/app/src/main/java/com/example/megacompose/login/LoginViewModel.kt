@@ -29,7 +29,6 @@ class LoginViewModel @Inject internal constructor(
 //    var result: Int by mutableStateOf(API_NONE)
 
     private val _result: MutableLiveData<Int> = MutableLiveData(API_NONE)
-
     val result: LiveData<Int> = _result
 
     fun login(userName: String, password: String) {

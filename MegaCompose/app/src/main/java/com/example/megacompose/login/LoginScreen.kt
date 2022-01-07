@@ -1,6 +1,5 @@
 package com.example.megacompose.login
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,8 +8,10 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -21,10 +22,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.megacompose.MainActivity
 import com.example.megacompose.R
 import com.example.megacompose.common.MegaButton
-import com.example.megacompose.ui.MegaScreen
+import com.example.megacompose.MegaScreen
 import com.example.megacompose.ui.theme.Typography
 import nz.mega.sdk.MegaError.API_OK
 import timber.log.Timber
@@ -36,19 +36,31 @@ fun showToast(text: String) {
 
 @Composable
 fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel) {
-
-
-    viewModel.result.observe(LocalContext.current as MainActivity) { result ->
-        Timber.d("LoginScreen error = ${result}")
-        when (result) {
-            API_OK -> navController.navigate(MegaScreen.Home.route)
-            else -> {
-
+    val state = viewModel.result.observeAsState(API_NONE)
+    Timber.d("state = ${state.value}")
+    when (state.value) {
+        API_NONE -> LoginView(viewModel = viewModel)
+        API_OK -> navController.navigate(MegaScreen.Home.route) {
+            popUpTo(MegaScreen.Home.route) {
+                inclusive = false
             }
         }
+        else -> LoginErrorView()
     }
+}
 
+@Composable
+fun LoginErrorView() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = "Login Error", fontSize = 40.sp)
+    }
+}
 
+@Composable
+private fun LoginView(viewModel: LoginViewModel) {
     Column(Modifier.padding(16.dp)) {
         Text(text = "LOG INTO MEGA", style = Typography.h6)
         Spacer(modifier = Modifier.height(16.dp))
