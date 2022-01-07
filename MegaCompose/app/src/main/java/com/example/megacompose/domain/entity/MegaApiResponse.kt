@@ -1,4 +1,4 @@
-package com.example.megacompose.login.domain.entity
+package com.example.megacompose.domain.entity
 
 import nz.mega.sdk.MegaApiJava
 import nz.mega.sdk.MegaError

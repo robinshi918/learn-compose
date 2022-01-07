@@ -1,7 +1,7 @@
-package com.example.megacompose.login.domain.usecase
+package com.example.megacompose.domain.usecase
 
-import com.example.megacompose.login.domain.entity.MegaApiResponse
-import com.example.megacompose.login.domain.entity.MegaApiResponseStage
+import com.example.megacompose.domain.entity.MegaApiResponse
+import com.example.megacompose.domain.entity.MegaApiResponseStage
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
