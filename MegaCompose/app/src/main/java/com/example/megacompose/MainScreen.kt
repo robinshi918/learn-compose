@@ -25,8 +25,6 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.megacompose.login.LoginViewModel
-import com.example.megacompose.ui.BottomBarItem
-import com.example.megacompose.ui.MegaScreen
 import com.example.megacompose.ui.screen.NavigationView
 
 @Composable
@@ -157,7 +155,6 @@ fun RowScope.AddItem(
                 popUpTo(navController.graph.findNode(BottomBarItem.Home.route)!!.id)
                 launchSingleTop = true
             }
-
         },
         unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
         modifier = Modifier

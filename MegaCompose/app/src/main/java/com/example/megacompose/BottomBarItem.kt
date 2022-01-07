@@ -1,6 +1,4 @@
-package com.example.megacompose.ui
-
-import com.example.megacompose.R
+package com.example.megacompose
 
 sealed class BottomBarItem(
     val route: String,

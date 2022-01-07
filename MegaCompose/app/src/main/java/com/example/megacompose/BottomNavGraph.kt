@@ -6,7 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.megacompose.login.LoginScreen
 import com.example.megacompose.login.LoginViewModel
-import com.example.megacompose.ui.MegaScreen
 import com.example.megacompose.ui.screen.*
 
 

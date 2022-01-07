@@ -36,7 +36,7 @@ class MegaComposeApplication : Application() {
         super.onCreate()
         INSTANCE = this
 
-        //TODO use another tree for Release build
+        //TODO use another Timber Tree for Release build
         Timber.plant(Timber.DebugTree())
     }
 

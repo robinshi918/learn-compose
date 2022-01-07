@@ -1,4 +1,4 @@
-package com.example.megacompose.ui
+package com.example.megacompose
 
 sealed class MegaScreen(val route: String) {
     object Login : MegaScreen("login_screen")
