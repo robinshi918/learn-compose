@@ -8,10 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,9 +23,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.megacompose.login.LoginViewModel
 import com.example.megacompose.ui.screen.NavigationView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun MainScreen(navController: NavHostController, loginViewModel: LoginViewModel) {
+    val scaffoldState = rememberScaffoldState()
+    val scaffoldScope = rememberCoroutineScope()
     Scaffold(
         bottomBar = {
             if (shouldShowBottomNavBar(navController = navController)) {
@@ -36,9 +37,10 @@ fun MainScreen(navController: NavHostController, loginViewModel: LoginViewModel)
             }
         },
         drawerContent = { NavigationView() },
-        drawerGesturesEnabled = true,
+        drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
+        scaffoldState = scaffoldState
     ) {
-        BottomNavGraph(navController = navController, loginViewModel)
+        BottomNavGraph(navController = navController, loginViewModel, scaffoldState, scaffoldScope)
     }
 }
 
@@ -50,7 +52,7 @@ fun shouldShowBottomNavBar(navController: NavHostController): Boolean {
 }
 
 @Composable
-fun HomeTitleBar() {
+fun HomeTitleBar(scaffoldState: ScaffoldState, scope: CoroutineScope) {
     Surface(
         elevation = 4.dp,
         modifier = Modifier
@@ -82,6 +84,7 @@ fun HomeTitleBar() {
                         contentDescription = "settings button",
                         modifier = Modifier.clickable {
                             println("setting icon clicked")
+                            scope.launch { scaffoldState.drawerState.open() }
                         }
                     )
                 },

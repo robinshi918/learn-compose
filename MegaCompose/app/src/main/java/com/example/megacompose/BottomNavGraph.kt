@@ -1,5 +1,6 @@
 package com.example.megacompose
 
+import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -7,16 +8,22 @@ import androidx.navigation.compose.composable
 import com.example.megacompose.login.LoginScreen
 import com.example.megacompose.login.LoginViewModel
 import com.example.megacompose.ui.screen.*
+import kotlinx.coroutines.CoroutineScope
 
 
 @Composable
-fun BottomNavGraph(navController: NavHostController, loginViewModel: LoginViewModel) {
+fun BottomNavGraph(
+    navController: NavHostController,
+    loginViewModel: LoginViewModel,
+    scaffoldState: ScaffoldState,
+    scope: CoroutineScope
+) {
     NavHost(
         navController = navController,
         startDestination = MegaScreen.Login.route
     ) {
         composable(route = MegaScreen.Home.route) {
-            HomeScreen()
+            HomeScreen(scaffoldState, scope)
         }
 
         composable(route = MegaScreen.CloudDrive.route) {

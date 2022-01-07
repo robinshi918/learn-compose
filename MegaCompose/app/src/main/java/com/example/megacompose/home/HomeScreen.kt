@@ -1,7 +1,8 @@
-package com.example.megacompose.ui.screen
+package com.example.megacompose.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.Text
@@ -12,15 +13,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.megacompose.HomeTitleBar
+import com.example.megacompose.ui.screen.OfflineScreen
+import com.example.megacompose.ui.screen.RecentScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(scaffoldState: ScaffoldState, scope: CoroutineScope) {
     Column(modifier = Modifier.fillMaxSize()) {
-        HomeTitleBar()
+        HomeTitleBar(scaffoldState, scope)
         HomeContent()
     }
 }
