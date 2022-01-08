@@ -21,13 +21,17 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.megacompose.clouddrive.CloudDriveViewModel
 import com.example.megacompose.login.LoginViewModel
 import com.example.megacompose.ui.screen.NavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun MainScreen(navController: NavHostController, loginViewModel: LoginViewModel) {
+fun MainScreen(
+    navController: NavHostController,
+    mainViewModel: MainViewModel
+) {
     val scaffoldState = rememberScaffoldState()
     val scaffoldScope = rememberCoroutineScope()
     Scaffold(
@@ -40,7 +44,12 @@ fun MainScreen(navController: NavHostController, loginViewModel: LoginViewModel)
         drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
         scaffoldState = scaffoldState
     ) {
-        BottomNavGraph(navController = navController, loginViewModel, scaffoldState, scaffoldScope)
+        BottomNavGraph(
+            navController = navController,
+            mainViewModel,
+            scaffoldState,
+            scaffoldScope
+        )
     }
 }
 

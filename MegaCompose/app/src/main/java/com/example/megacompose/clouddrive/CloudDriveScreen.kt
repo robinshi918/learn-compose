@@ -8,36 +8,42 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Mail
+import androidx.compose.material.icons.filled.DeviceUnknown
+import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Note
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.megacompose.MainViewModel
 import com.example.megacompose.R
 import com.example.megacompose.clouddrive.CloudDriveDataProvider
-import com.example.megacompose.ui.theme.MegaComposeTheme
+import com.example.megacompose.clouddrive.CloudDriveViewModel
+import com.example.megacompose.clouddrive.MegaNodeData
 import com.example.megacompose.ui.theme.Typography
+import nz.mega.sdk.MegaNode
 
 
 @Composable
-fun CloudDriveScreen() {
-
+fun CloudDriveScreen(mainViewModel: MainViewModel) {
     Column(modifier = Modifier.fillMaxSize()) {
-        FilesTitleBar()
-        FilesContent()
+        CloudDriveTitleBar()
+        CloudDriveContent(mainViewModel)
     }
-
 }
 
 @Composable
-private fun FilesContent() {
+private fun CloudDriveContent(mainViewModel: MainViewModel) {
 
-    val files = remember {
+    val nodeList = mainViewModel.nodeList.observeAsState()
+
+    val fileList = remember {
         CloudDriveDataProvider.fileList
     }
 
@@ -46,34 +52,68 @@ private fun FilesContent() {
             .fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        LazyColumn(contentPadding = PaddingValues(horizontal = 10.dp, vertical = 16.dp)) {
+        LazyColumn(
+            contentPadding = PaddingValues(horizontal = 10.dp, vertical = 16.dp)
+        ) {
             items(
-                items = files,
-                itemContent = {
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 16.dp, end = 16.dp, top = 16.dp)
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(40.dp),
-                            imageVector = Icons.Default.Mail,
-                            contentDescription = ""
-                        )
-                        Column(modifier = Modifier.padding(start = 16.dp)) {
-                            Text(text = it.fileName, style = Typography.h6)
-                            Text(text = it.fileSize)
-                        }
-                    }
-                }
+                items = fileList,
+                itemContent = { NodeCard(it) }
             )
         }
     }
 }
 
 @Composable
-fun FilesTitleBar() {
+private fun NodeCard2(node: MegaNode) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+    ) {
+        Icon(
+            modifier = Modifier.size(40.dp),
+            imageVector = nodeIcon(node),
+            contentDescription = ""
+        )
+        Column(modifier = Modifier.padding(start = 16.dp)) {
+            Text(text = node.name, style = Typography.h6)
+            Text(text = node.size.toString())
+        }
+    }
+}
+
+private fun nodeIcon(node: MegaNode): ImageVector {
+    return when (node.type) {
+        MegaNode.TYPE_FILE -> Icons.Default.Note
+        MegaNode.TYPE_FOLDER,
+        MegaNode.TYPE_INCOMING,
+        MegaNode.TYPE_RUBBISH -> Icons.Default.Folder
+        MegaNode.TYPE_ROOT -> Icons.Default.Folder
+        else -> Icons.Default.DeviceUnknown
+    }
+}
+
+@Composable
+private fun NodeCard(it: MegaNodeData) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+    ) {
+        Icon(
+            modifier = Modifier.size(40.dp),
+            imageVector = Icons.Default.Folder,
+            contentDescription = ""
+        )
+        Column(modifier = Modifier.padding(start = 16.dp)) {
+            Text(text = it.fileName, style = Typography.h6)
+            Text(text = it.fileSize)
+        }
+    }
+}
+
+@Composable
+fun CloudDriveTitleBar() {
 
     TopAppBar(
         title = {
@@ -112,12 +152,4 @@ fun FilesTitleBar() {
         }
 
     )
-}
-
-@Preview
-@Composable
-fun previewCloudDrive() {
-    MegaComposeTheme {
-        CloudDriveScreen()
-    }
 }

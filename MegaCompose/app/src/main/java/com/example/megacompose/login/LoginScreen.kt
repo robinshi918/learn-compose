@@ -22,6 +22,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.megacompose.MainViewModel
 import com.example.megacompose.R
 import com.example.megacompose.common.MegaButton
 import com.example.megacompose.MegaScreen
@@ -35,11 +36,11 @@ fun showToast(text: String) {
 }
 
 @Composable
-fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel) {
+fun LoginScreen(navController: NavHostController, viewModel: MainViewModel) {
     val state = viewModel.result.observeAsState(API_NONE)
     Timber.d("state = ${state.value}")
     when (state.value) {
-        API_NONE -> LoginView(viewModel = viewModel)
+        API_NONE -> LoginView(viewModel)
         API_OK -> navController.navigate(MegaScreen.Home.route) {
             popUpTo(MegaScreen.Home.route) {
                 inclusive = false
@@ -60,7 +61,7 @@ fun LoginErrorView() {
 }
 
 @Composable
-private fun LoginView(viewModel: LoginViewModel) {
+private fun LoginView(viewModel: MainViewModel) {
     Column(Modifier.padding(16.dp)) {
         Text(text = "LOG INTO MEGA", style = Typography.h6)
         Spacer(modifier = Modifier.height(16.dp))

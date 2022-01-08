@@ -12,7 +12,6 @@ class FetchMegaNodesUseCase @Inject internal constructor(val megaApi: MegaApiAnd
     suspend operator fun invoke(): Int =
         suspendCoroutine { cont ->
 
-
             megaApi.fetchNodes(object : MegaRequestListenerInterface {
                 override fun onRequestStart(api: MegaApiJava?, request: MegaRequest?) {}
 

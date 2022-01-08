@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.megacompose.clouddrive.CloudDriveViewModel
 import com.example.megacompose.home.HomeScreen
 import com.example.megacompose.login.LoginScreen
 import com.example.megacompose.login.LoginViewModel
@@ -15,7 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 @Composable
 fun BottomNavGraph(
     navController: NavHostController,
-    loginViewModel: LoginViewModel,
+    mainViewModel: MainViewModel,
     scaffoldState: ScaffoldState,
     scope: CoroutineScope
 ) {
@@ -28,7 +29,7 @@ fun BottomNavGraph(
         }
 
         composable(route = MegaScreen.CloudDrive.route) {
-            CloudDriveScreen()
+            CloudDriveScreen(mainViewModel)
         }
 
         composable(route = MegaScreen.Photos.route) {
@@ -44,7 +45,7 @@ fun BottomNavGraph(
         }
 
         composable(route = MegaScreen.Login.route) {
-            LoginScreen(navController, loginViewModel)
+            LoginScreen(navController, mainViewModel)
         }
     }
 
