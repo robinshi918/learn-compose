@@ -20,7 +20,7 @@ class CloudDriveViewModel @Inject internal constructor(
 
     private val _currentParent = MutableLiveData<MegaNode>()
 
-    fun getChildren(parent: MegaNode): List<MegaNode> {
+    fun getChildren(parent: MegaNode): List<MegaNode>? {
         return getChildrenUseCase(parent)
     }
 

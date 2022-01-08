@@ -37,7 +37,7 @@ fun showToast(text: String) {
 
 @Composable
 fun LoginScreen(navController: NavHostController, viewModel: MainViewModel) {
-    val state = viewModel.result.observeAsState(API_NONE)
+    val state = viewModel.loginResult.observeAsState(API_NONE)
     Timber.d("state = ${state.value}")
     when (state.value) {
         API_NONE -> LoginView(viewModel)

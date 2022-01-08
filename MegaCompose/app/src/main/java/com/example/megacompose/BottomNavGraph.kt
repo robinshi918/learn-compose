@@ -8,7 +8,7 @@ import androidx.navigation.compose.composable
 import com.example.megacompose.home.HomeScreen
 import com.example.megacompose.login.LoginScreen
 import com.example.megacompose.ui.screen.ChatScreen
-import com.example.megacompose.ui.screen.CloudDriveScreen
+import com.example.megacompose.clouddrive.CloudDriveScreen
 import com.example.megacompose.ui.screen.PhotoScreen
 import com.example.megacompose.ui.screen.TransferScreen
 import kotlinx.coroutines.CoroutineScope

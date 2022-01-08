@@ -1,4 +1,4 @@
-package com.example.megacompose.ui.screen
+package com.example.megacompose.clouddrive
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,7 +14,6 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Note
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,10 +22,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.megacompose.MainViewModel
 import com.example.megacompose.R
-import com.example.megacompose.clouddrive.CloudDriveDataProvider
-import com.example.megacompose.clouddrive.MegaNodeData
 import com.example.megacompose.ui.theme.Typography
 import nz.mega.sdk.MegaNode
+import timber.log.Timber
 
 
 @Composable
@@ -40,11 +38,7 @@ fun CloudDriveScreen(mainViewModel: MainViewModel) {
 @Composable
 private fun CloudDriveContent(mainViewModel: MainViewModel) {
 
-    val nodeList = mainViewModel.nodeList.observeAsState()
-
-    val fileList = remember {
-        CloudDriveDataProvider.fileList
-    }
+    val nodeList = mainViewModel.cloudDriveNodeList.observeAsState()
 
     Box(
         modifier = Modifier
@@ -52,22 +46,24 @@ private fun CloudDriveContent(mainViewModel: MainViewModel) {
         contentAlignment = Alignment.Center,
     ) {
         LazyColumn(
-            contentPadding = PaddingValues(horizontal = 10.dp, vertical = 16.dp)
+            contentPadding = PaddingValues(horizontal = 10.dp, vertical = 16.dp),
+            verticalArrangement = Arrangement.Top
         ) {
             items(
-                items = fileList,
-                itemContent = { NodeCard(it) }
+                items = nodeList.value!!,
+                itemContent = { NodeCard(it, mainViewModel) }
             )
         }
     }
 }
 
 @Composable
-private fun NodeCard2(node: MegaNode) {
+private fun NodeCard(node: MegaNode, viewModel: MainViewModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+            .clickable { openNode(node, viewModel) }
     ) {
         Icon(
             modifier = Modifier.size(40.dp),
@@ -78,6 +74,15 @@ private fun NodeCard2(node: MegaNode) {
             Text(text = node.name, style = Typography.h6)
             Text(text = node.size.toString())
         }
+    }
+}
+
+private fun openNode(node: MegaNode, viewModel: MainViewModel) {
+    if (node.type == MegaNode.TYPE_FOLDER) {
+        viewModel.getChildren(node)
+    } else {
+        // do nothing
+        Timber.d("we do not open file yet")
     }
 }
 
@@ -93,27 +98,7 @@ private fun nodeIcon(node: MegaNode): ImageVector {
 }
 
 @Composable
-private fun NodeCard(it: MegaNodeData) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp, top = 16.dp)
-    ) {
-        Icon(
-            modifier = Modifier.size(40.dp),
-            imageVector = Icons.Default.Folder,
-            contentDescription = ""
-        )
-        Column(modifier = Modifier.padding(start = 16.dp)) {
-            Text(text = it.fileName, style = Typography.h6)
-            Text(text = it.fileSize)
-        }
-    }
-}
-
-@Composable
 fun CloudDriveTitleBar() {
-
     TopAppBar(
         title = {
             Text(

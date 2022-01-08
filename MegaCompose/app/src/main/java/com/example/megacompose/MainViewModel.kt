@@ -24,29 +24,39 @@ class MainViewModel @Inject internal constructor(
     val getChildrenOfRootUseCase: GetChildrenOfRootUseCase
 ) : ViewModel() {
 
-    private val _result: MutableLiveData<Int> = MutableLiveData(API_NONE)
-    val result: LiveData<Int> = _result
+    // Login
+    private val _loginResult: MutableLiveData<Int> = MutableLiveData(API_NONE)
+    val loginResult: LiveData<Int> = _loginResult
+
+    // Cloud Drive
+    private val _cloudDriveNodeList = MutableLiveData<List<MegaNode>>(listOf())
+    val cloudDriveNodeList: LiveData<List<MegaNode>> = _cloudDriveNodeList
+    private val _currentParentNode = MutableLiveData<MegaNode>()
+    val currentParentNode: LiveData<MegaNode> = _currentParentNode
 
     fun login(userName: String, password: String) {
         viewModelScope.launch {
             loginUseCase(userName, password).collect { resp ->
-                Timber.d("receive log responses - ${resp.stage} ${resp.stage}")
+                Timber.d("receive login responses - ${resp.stage} ${resp.stage}")
                 if (resp.stage == MegaApiResponseStage.FINISH && resp.error != null) {
                     when (resp.error.errorCode) {
                         MegaError.API_OK -> {
                             val fetchNodeResult = fetchNodesUseCase()
+                            getChildrenOfRoot()
+
+                            // after fetching root nodes, notify UI to leave Login Screen
+                            _loginResult.value = fetchNodeResult
                             Timber.d("login OK. fetchNodes is Done with $fetchNodeResult")
-                            _result.value = fetchNodeResult
                         }
                         MegaError.API_EMFAREQUIRED -> {
                             //TODO show MFA UI
-                            _result.value = resp.error.errorCode
+                            _loginResult.value = resp.error.errorCode
                         }
                         MegaError.API_EARGS,
                         MegaError.API_EFAILED,
                         MegaError.API_ENOENT -> {
                             //TODO notify UI to show error message
-                            _result.value = resp.error.errorCode
+                            _loginResult.value = resp.error.errorCode
                         }
                     }
                 }
@@ -61,18 +71,15 @@ class MainViewModel @Inject internal constructor(
         TODO("not yet implemented")
     }
 
-    private val _nodeList = MutableLiveData<List<MegaNode>>(listOf())
-    val nodeList: LiveData<List<MegaNode>> = _nodeList
-
-    private val _currentParentNode = MutableLiveData<MegaNode>()
-    val currentParentNode: LiveData<MegaNode> = _currentParentNode
-
-    fun getChildren(parent: MegaNode): List<MegaNode> {
-        return getChildrenNodesUseCase(parent)
+    fun getChildren(parent: MegaNode) {
+        val nodeList = getChildrenNodesUseCase(parent)
+        if (nodeList != null) {
+            _cloudDriveNodeList.value = nodeList
+            _currentParentNode.value = parent
+        }
     }
 
-    fun getChildrenOfRoot(): List<MegaNode> {
-        return getChildrenOfRootUseCase()
+    fun getChildrenOfRoot() {
+        _cloudDriveNodeList.value =  getChildrenOfRootUseCase()
     }
-
 }
