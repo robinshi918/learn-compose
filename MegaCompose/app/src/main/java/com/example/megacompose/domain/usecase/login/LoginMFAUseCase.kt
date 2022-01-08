@@ -1,4 +1,4 @@
-package com.example.megacompose.domain.usecase
+package com.example.megacompose.domain.usecase.login
 
 import nz.mega.sdk.MegaApiAndroid
 import javax.inject.Inject

@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.megacompose.domain.entity.MegaApiResponseStage
-import com.example.megacompose.domain.usecase.FetchMegaNodesUseCase
-import com.example.megacompose.domain.usecase.LoginMFAUseCase
-import com.example.megacompose.domain.usecase.LoginUseCase
+import com.example.megacompose.domain.usecase.clouddrive.FetchMegaNodesUseCase
+import com.example.megacompose.domain.usecase.login.LoginMFAUseCase
+import com.example.megacompose.domain.usecase.login.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

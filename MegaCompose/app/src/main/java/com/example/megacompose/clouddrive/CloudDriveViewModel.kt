@@ -3,15 +3,15 @@ package com.example.megacompose.clouddrive
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.megacompose.domain.usecase.GetChildrenNodesUseCase
-import com.example.megacompose.domain.usecase.GetChildrenOfRootUseCase
+import com.example.megacompose.domain.usecase.clouddrive.GetChildrenUseCase
+import com.example.megacompose.domain.usecase.clouddrive.GetChildrenOfRootUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import nz.mega.sdk.MegaNode
 import javax.inject.Inject
 
 @HiltViewModel
 class CloudDriveViewModel @Inject internal constructor(
-    val getChildrenUseCase: GetChildrenNodesUseCase,
+    val getChildrenUseCase: GetChildrenUseCase,
     val getChildrenOfRootUseCase: GetChildrenOfRootUseCase
 ) : ViewModel() {
 

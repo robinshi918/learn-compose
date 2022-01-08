@@ -1,4 +1,4 @@
-package com.example.megacompose.domain.usecase
+package com.example.megacompose.domain.usecase.login
 
 import com.example.megacompose.domain.entity.MegaApiResponse
 import com.example.megacompose.domain.entity.MegaApiResponseStage

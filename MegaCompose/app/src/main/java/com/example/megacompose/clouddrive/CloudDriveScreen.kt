@@ -8,10 +8,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DeviceUnknown
-import androidx.compose.material.icons.filled.Folder
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Note
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -30,7 +27,7 @@ import timber.log.Timber
 @Composable
 fun CloudDriveScreen(mainViewModel: MainViewModel) {
     Column(modifier = Modifier.fillMaxSize()) {
-        CloudDriveTitleBar()
+        CloudDriveTitleBar(mainViewModel)
         CloudDriveContent(mainViewModel)
     }
 }
@@ -43,7 +40,7 @@ private fun CloudDriveContent(mainViewModel: MainViewModel) {
     Box(
         modifier = Modifier
             .fillMaxSize(),
-        contentAlignment = Alignment.Center,
+        contentAlignment = Alignment.TopCenter,
     ) {
         LazyColumn(
             contentPadding = PaddingValues(horizontal = 10.dp, vertical = 16.dp),
@@ -67,7 +64,7 @@ private fun NodeCard(node: MegaNode, viewModel: MainViewModel) {
     ) {
         Icon(
             modifier = Modifier.size(40.dp),
-            imageVector = nodeIcon(node),
+            imageVector = getNodeIcon(node),
             contentDescription = ""
         )
         Column(modifier = Modifier.padding(start = 16.dp)) {
@@ -86,7 +83,7 @@ private fun openNode(node: MegaNode, viewModel: MainViewModel) {
     }
 }
 
-private fun nodeIcon(node: MegaNode): ImageVector {
+private fun getNodeIcon(node: MegaNode): ImageVector {
     return when (node.type) {
         MegaNode.TYPE_FILE -> Icons.Default.Note
         MegaNode.TYPE_FOLDER,
@@ -98,12 +95,17 @@ private fun nodeIcon(node: MegaNode): ImageVector {
 }
 
 @Composable
-fun CloudDriveTitleBar() {
+fun CloudDriveTitleBar(mainViewModel: MainViewModel) {
+
+    val title = mainViewModel.cloudDriveTitle.observeAsState()
+    val isRootNode = mainViewModel.cloudDriveIsRoot.observeAsState()
+
     TopAppBar(
         title = {
             Text(
                 modifier = Modifier.padding(start = 0.dp),
-                text = "CLOUD DRIVE", style = Typography.h6
+                text = title.value!!,
+                style = Typography.h6
             )
         },
         backgroundColor = Color.Transparent,
@@ -112,8 +114,14 @@ fun CloudDriveTitleBar() {
             Icon(
                 modifier = Modifier
                     .padding(end = 0.dp)
-                    .clickable {},
-                imageVector = Icons.Default.Menu,
+                    .clickable {
+                        if (isRootNode.value!!) {
+                            // TODO show drawer
+                        } else {
+                            mainViewModel.gotoParentFolder()
+                        }
+                    },
+                imageVector = if (isRootNode.value!!) Icons.Default.Menu else Icons.Default.ArrowBack,
                 contentDescription = "Settings button"
             )
         },
