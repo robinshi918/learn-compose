@@ -23,8 +23,8 @@ android {
 
     sourceSets.main {
         java {
-            srcDirs += '../sdk/jni/mega/sdk/bindings/java'
-            srcDirs += '../sdk/jni/megachat/sdk/bindings/java'
+            srcDirs += '../sdk/mega/sdk/bindings/java'
+            srcDirs += '../sdk/megachat/sdk/bindings/java'
             srcDirs += '../sdk/java'
             exclude '**/MegaApiSwing.java'
         }

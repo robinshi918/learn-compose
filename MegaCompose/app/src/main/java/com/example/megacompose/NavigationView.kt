@@ -77,7 +77,7 @@ fun NavigationItem(text: String, onClick: () -> Unit) {
     Column {
         Box(
             modifier = Modifier
-                .clickable { onClick }
+                .clickable { onClick() }
                 .height(56.dp)
                 .fillMaxWidth(),
             contentAlignment = Alignment.CenterStart

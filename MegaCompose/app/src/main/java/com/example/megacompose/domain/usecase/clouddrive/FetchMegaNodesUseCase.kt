@@ -23,7 +23,7 @@ class FetchMegaNodesUseCase @Inject internal constructor(val megaApi: MegaApiAnd
                     request: MegaRequest?,
                     e: MegaError?
                 ) {
-                    Timber.d("fetchNodes onRequestFinish: ${e!!.errorString}(${e.errorCode})")
+                    //Timber.d("fetchNodes onRequestFinish: ${e!!.errorString}(${e.errorCode})")
                     if (e != null) {
                         cont.resumeWith(Result.success(e.errorCode))
                     } else {
