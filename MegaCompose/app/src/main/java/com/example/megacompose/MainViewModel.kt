@@ -4,8 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.megacompose.domain.entity.MegaApiResponse
 import com.example.megacompose.domain.entity.MegaApiResponseStage
-import com.example.megacompose.domain.usecase.clouddrive.*
+import com.example.megacompose.domain.usecase.clouddrive.FetchMegaNodesUseCase
+import com.example.megacompose.domain.usecase.clouddrive.GetChildrenUseCase
+import com.example.megacompose.domain.usecase.clouddrive.GetParentNodeUseCase
+import com.example.megacompose.domain.usecase.clouddrive.GetRootNodeUseCase
 import com.example.megacompose.domain.usecase.login.LoginMFAUseCase
 import com.example.megacompose.domain.usecase.login.LoginUseCase
 import com.example.megacompose.login.API_NONE
@@ -24,7 +28,6 @@ class MainViewModel @Inject internal constructor(
     val loginMfaUseCase: LoginMFAUseCase,
     val fetchNodesUseCase: FetchMegaNodesUseCase,
     val getChildrenUseCase: GetChildrenUseCase,
-    /*val getChildrenOfRootUseCase: GetChildrenOfRootUseCase,*/
     val getParentNodeUseCase: GetParentNodeUseCase,
     val getRootNodeUseCase: GetRootNodeUseCase
 ) : ViewModel() {
@@ -32,6 +35,10 @@ class MainViewModel @Inject internal constructor(
     // Login Screen
     private val _loginResult: MutableLiveData<Int> = MutableLiveData(API_NONE)
     val loginResult: LiveData<Int> = _loginResult
+
+    private val _loginStage: MutableLiveData<MegaApiResponseStage> =
+        MutableLiveData(MegaApiResponseStage.NONE)
+    val loginStage: LiveData<MegaApiResponseStage> = _loginStage
 
     // Cloud Drive Screen
     private val _cloudDriveNodeList = MutableLiveData<List<MegaNode>>(listOf())
@@ -46,30 +53,53 @@ class MainViewModel @Inject internal constructor(
         viewModelScope.launch {
             loginUseCase(userName, password).collect { resp ->
                 Timber.d("receive login responses - ${resp.stage} ${resp.stage}")
-                if (resp.stage == MegaApiResponseStage.FINISH && resp.error != null) {
-                    when (resp.error.errorCode) {
-                        MegaError.API_OK -> {
-                            val fetchNodeResult = fetchNodesUseCase()
 
-                            val root = getRootNodeUseCase()
-                            root?.let { getChildren(root) }
-//                            getChildrenOfRoot()
-
-                            // after fetching root nodes, notify UI to leave Login Screen
-                            _loginResult.value = fetchNodeResult
-                            Timber.d("login OK. fetchNodes is Done with $fetchNodeResult")
-                        }
-                        MegaError.API_EMFAREQUIRED -> {
-                            //TODO show MFA UI
-                            _loginResult.value = resp.error.errorCode
-                        }
-                        MegaError.API_EARGS,
-                        MegaError.API_EFAILED,
-                        MegaError.API_ENOENT -> {
-                            //TODO notify UI to show error message
-                            _loginResult.value = resp.error.errorCode
-                        }
+                when (resp.stage) {
+                    MegaApiResponseStage.NONE -> {
+                        _loginStage.value = resp.stage
                     }
+                    MegaApiResponseStage.START -> {
+                        _loginStage.value = resp.stage
+                    }
+                    MegaApiResponseStage.UPDATE -> {
+                        _loginStage.value = resp.stage
+                    }
+                    MegaApiResponseStage.FINISH -> {
+                        _loginStage.value = resp.stage
+                        handleLoginFinish(resp)
+                    }
+                    MegaApiResponseStage.TEMPORARY_ERROR -> {
+                    }
+                }
+
+
+            }
+        }
+    }
+
+    private suspend fun handleLoginFinish(resp: MegaApiResponse) {
+        if (resp.error != null) {
+            when (resp.error.errorCode) {
+                MegaError.API_OK -> {
+                    val fetchNodeResult = fetchNodesUseCase()
+
+                    val root = getRootNodeUseCase()
+                    root?.let { getChildren(root) }
+                    //                            getChildrenOfRoot()
+
+                    // after fetching root nodes, notify UI to leave Login Screen
+                    _loginResult.value = fetchNodeResult
+                    Timber.d("login OK. fetchNodes is Done with $fetchNodeResult")
+                }
+                MegaError.API_EMFAREQUIRED -> {
+                    //TODO show MFA UI
+                    _loginResult.value = resp.error.errorCode
+                }
+                MegaError.API_EARGS,
+                MegaError.API_EFAILED,
+                MegaError.API_ENOENT -> {
+                    //TODO notify UI to show error message
+                    _loginResult.value = resp.error.errorCode
                 }
             }
         }

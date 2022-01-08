@@ -12,6 +12,7 @@ data class MegaApiResponse(
 )
 
 enum class MegaApiResponseStage {
+    NONE,
     START,
     UPDATE,
     FINISH,

@@ -1,6 +1,7 @@
 package com.example.megacompose.login
 
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -16,9 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -26,6 +29,8 @@ import com.example.megacompose.MainViewModel
 import com.example.megacompose.MegaScreen
 import com.example.megacompose.R
 import com.example.megacompose.common.MegaButton
+import com.example.megacompose.domain.entity.MegaApiResponseStage
+import com.example.megacompose.ui.theme.MegaComposeTheme
 import com.example.megacompose.ui.theme.Typography
 import nz.mega.sdk.MegaError.API_OK
 import timber.log.Timber
@@ -37,26 +42,53 @@ fun showToast(text: String) {
 
 @Composable
 fun LoginScreen(navController: NavHostController, viewModel: MainViewModel) {
-    val state = viewModel.loginResult.observeAsState(API_NONE)
-    Timber.d("state = ${state.value}")
-    when (state.value) {
-        API_NONE -> LoginView(viewModel)
-        API_OK -> navController.navigate(MegaScreen.Home.route) {
-            popUpTo(MegaScreen.Home.route) {
-                inclusive = false
+    val loginResult = viewModel.loginResult.observeAsState(API_NONE)
+    Timber.d("state = ${loginResult.value}")
+    val stage = viewModel.loginStage.observeAsState()
+
+    when (stage.value) {
+        MegaApiResponseStage.NONE -> {
+            LoginView(viewModel = viewModel)
+        }
+        MegaApiResponseStage.START -> {
+            LoadingView()
+        }
+        MegaApiResponseStage.UPDATE -> {
+            LoadingView()
+        }
+        MegaApiResponseStage.FINISH -> {
+            if (loginResult.value == API_OK) {
+                navController.navigate(MegaScreen.Home.route) {
+                    popUpTo(MegaScreen.Home.route) {
+                        inclusive = false
+                    }
+                }
+            } else {
+                LoginView(viewModel = viewModel)
             }
         }
-        else -> LoginErrorView()
+        MegaApiResponseStage.TEMPORARY_ERROR -> {
+        }
     }
 }
 
 @Composable
-fun LoginErrorView() {
+fun LoadingView() {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = "Login Error", fontSize = 40.sp)
+        Column {
+            Image(
+                painter = painterResource(id = R.drawable.logo_loading_ic),
+                contentDescription = "",
+                modifier = Modifier.size(144.dp)
+            )
+
+            Text(text = "Connecting to the server")
+            Text(text = "Updating file list")
+            Text(text = "Preparing file list")
+        }
     }
 }
 
@@ -135,5 +167,13 @@ private fun LoginView(viewModel: MainViewModel) {
                 modifier = Modifier.clickable {}
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewLoadingView() {
+    MegaComposeTheme {
+        LoadingView()
     }
 }
