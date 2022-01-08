@@ -65,8 +65,8 @@ class MainViewModel @Inject internal constructor(
                         _loginStage.value = resp.stage
                     }
                     MegaApiResponseStage.FINISH -> {
-                        _loginStage.value = resp.stage
                         handleLoginFinish(resp)
+                        _loginStage.value = MegaApiResponseStage.FINISH
                     }
                     MegaApiResponseStage.TEMPORARY_ERROR -> {
                     }
@@ -85,7 +85,6 @@ class MainViewModel @Inject internal constructor(
 
                     val root = getRootNodeUseCase()
                     root?.let { getChildren(root) }
-                    //                            getChildrenOfRoot()
 
                     // after fetching root nodes, notify UI to leave Login Screen
                     _loginResult.value = fetchNodeResult

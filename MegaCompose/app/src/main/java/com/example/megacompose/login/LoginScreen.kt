@@ -43,8 +43,10 @@ fun showToast(text: String) {
 @Composable
 fun LoginScreen(navController: NavHostController, viewModel: MainViewModel) {
     val loginResult = viewModel.loginResult.observeAsState(API_NONE)
-    Timber.d("state = ${loginResult.value}")
+
     val stage = viewModel.loginStage.observeAsState()
+
+    Timber.d("state = ${loginResult.value}, stage = ${stage.value}")
 
     when (stage.value) {
         MegaApiResponseStage.NONE -> {
