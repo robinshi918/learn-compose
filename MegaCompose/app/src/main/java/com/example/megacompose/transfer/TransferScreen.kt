@@ -1,4 +1,4 @@
-package com.example.megacompose.ui.screen
+package com.example.megacompose.transfer
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

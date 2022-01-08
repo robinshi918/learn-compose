@@ -1,4 +1,4 @@
-package com.example.megacompose.ui.screen
+package com.example.megacompose.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
