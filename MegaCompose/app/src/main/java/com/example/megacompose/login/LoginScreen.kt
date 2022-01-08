@@ -23,9 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.megacompose.MainViewModel
+import com.example.megacompose.MegaScreen
 import com.example.megacompose.R
 import com.example.megacompose.common.MegaButton
-import com.example.megacompose.MegaScreen
 import com.example.megacompose.ui.theme.Typography
 import nz.mega.sdk.MegaError.API_OK
 import timber.log.Timber

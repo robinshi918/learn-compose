@@ -5,8 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.navigation.compose.rememberNavController
-import com.example.megacompose.clouddrive.CloudDriveViewModel
-import com.example.megacompose.login.LoginViewModel
 import com.example.megacompose.ui.theme.MegaComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
 

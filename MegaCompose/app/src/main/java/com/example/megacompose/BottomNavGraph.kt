@@ -5,11 +5,12 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.megacompose.clouddrive.CloudDriveViewModel
 import com.example.megacompose.home.HomeScreen
 import com.example.megacompose.login.LoginScreen
-import com.example.megacompose.login.LoginViewModel
-import com.example.megacompose.ui.screen.*
+import com.example.megacompose.ui.screen.ChatScreen
+import com.example.megacompose.ui.screen.CloudDriveScreen
+import com.example.megacompose.ui.screen.PhotoScreen
+import com.example.megacompose.ui.screen.TransferScreen
 import kotlinx.coroutines.CoroutineScope
 
 

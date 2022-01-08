@@ -1,13 +1,12 @@
 package com.example.megacompose.domain.usecase
 
-import nz.mega.sdk.*
+import nz.mega.sdk.MegaApiAndroid
 import javax.inject.Inject
 
 class LoginMFAUseCase @Inject constructor(private val megaApi: MegaApiAndroid) {
     suspend operator fun invoke(userName: String, password: String, authCode: String) {
         TODO("not yet implemented")
     }
-
 
 
     /*fun login(user: String, password: String, authCode: String) {

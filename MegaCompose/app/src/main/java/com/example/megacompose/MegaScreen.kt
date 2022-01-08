@@ -6,5 +6,5 @@ sealed class MegaScreen(val route: String) {
     object CloudDrive : MegaScreen("cloud_drive_screen")
     object Photos : MegaScreen("photos_screen")
     object Chat : MegaScreen("chat_screen")
-    object Transfer: MegaScreen("transfer_screen")
+    object Transfer : MegaScreen("transfer_screen")
 }

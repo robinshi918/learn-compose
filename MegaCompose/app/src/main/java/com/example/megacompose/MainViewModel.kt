@@ -22,7 +22,7 @@ class MainViewModel @Inject internal constructor(
     val fetchNodesUseCase: FetchMegaNodesUseCase,
     val getChildrenNodesUseCase: GetChildrenNodesUseCase,
     val getChildrenOfRootUseCase: GetChildrenOfRootUseCase
-): ViewModel() {
+) : ViewModel() {
 
     private val _result: MutableLiveData<Int> = MutableLiveData(API_NONE)
     val result: LiveData<Int> = _result
